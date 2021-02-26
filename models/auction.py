@@ -4,6 +4,7 @@ import datetime
 
 class Auction(db.Model):
     __tablename__ = 'Auction'
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(30), nullable=False)
     description = db.Column(db.String(200), nullable=False)

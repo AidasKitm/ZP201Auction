@@ -2,7 +2,7 @@ import os
 
 
 class Config:
-    with open('secret_key','r') as f:
-        line = f.readline()
-        SECRET_KEY = line
     SECRET_KEY = os.urandom(32)
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///auction.db'
+    TEMPLATES_AUTO_RELOAD = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False

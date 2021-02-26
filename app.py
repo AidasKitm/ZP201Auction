@@ -1,14 +1,16 @@
 from flask import Flask, render_template
-
+from config import Config
+from models.user import User
+from models.auction import Auction
+from models.offer import Offer
+from models import db
 
 app = Flask(__name__)
+app.config.from_object(Config)
+db.init_app(app=app)
 
-
-@app.route('/')
-def hello_world():
-    user = {"username": "john", "password":"shouldn't save as text"}
-    context = {"user": user, "word2": "something2"}
-    return render_template(template_name_or_list="index.html", **context)
+with app.app_context():
+    db.create_all(app=app)
 
 
 if __name__ == '__main__':
@@ -17,3 +19,5 @@ if __name__ == '__main__':
 
 # MVC = Model View Controller
 # MVT = Model View Template
+
+
