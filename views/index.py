@@ -1,8 +1,8 @@
-from flask import render_template
+from flask import render_template, session
+from flask.views import MethodView
 
 
-
-def hello_world():
-    user = {"username": "john", "password":"shouldn't save as text"}
-    context = {"user": user, "word2": "something2"}
-    return render_template(template_name_or_list="index.html", **context)
+class Index(MethodView):
+    def get(self):
+        user = session.get('username')
+        return render_template('index.html', user=user)

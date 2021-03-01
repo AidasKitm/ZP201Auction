@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login</title>
 </head>
 <body>
 <form method="post">
-    {{ registration_form.csrf_token }}
-    {% for field in registration_form %}
+    {{ login_form.csrf_token }}
+    {% for field in login_form %}
+        {{ field.label }}
         {{ field }}
     {% endfor %}
 

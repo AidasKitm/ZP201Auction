@@ -1,0 +1,1 @@
+categories = [("car", "Cars"), ("mobile phone", "Mobile phones")]

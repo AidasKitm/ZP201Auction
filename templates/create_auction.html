@@ -6,8 +6,9 @@
 </head>
 <body>
 <form method="post">
-    {{ registration_form.csrf_token }}
-    {% for field in registration_form %}
+    {{ auction_form.csrf_token }}
+    {% for field in auction_form %}
+        {{ field.label }}
         {{ field }}
     {% endfor %}
 
