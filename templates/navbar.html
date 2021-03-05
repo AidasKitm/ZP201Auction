@@ -1,0 +1,15 @@
+<nav>
+    <div class="nav-wrapper">
+        <ul>
+            <li><a href="{{ url_for('create_auction') }}" class="left-align">Create Auction</a></li>
+            <li class="divider"></li>
+            <li><a href="{{ url_for('index') }}" class="center-align">Home</a></li>
+            <li class="divider"></li>
+            <li><a href="{{ url_for('login') }}" class="right-align">Login</a></li>
+            <li class="divider"></li>
+            <li><a href="{{ url_for('register') }}" class="left">Register</a></li>
+        </ul>
+    </div>
+
+{# IF not logged in ->  DROPDOWN -> Login/Register   #}
+</nav>

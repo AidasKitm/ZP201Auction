@@ -1,10 +1,12 @@
 <!DOCTYPE html>
+{% include 'base.html' %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
 </head>
 <body>
+{% include 'navbar.html' %}
 <form method="post">
     {{ login_form.csrf_token }}
     {% for field in login_form %}

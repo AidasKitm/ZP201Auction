@@ -1,16 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+{% include 'base.html' %}
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
 </head>
 <body>
-{{ auction.title }}<br>
+
+{% include 'navbar.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col s12 m8">
+            <div class="card">
+                <div class="title col s12 m8">
+                    <span class="card-title">{{ auction.title.label }}</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div>
+                    <span style="color: #5a5a5a">{{ auction.city|upper }}</span>
+                </div>
+
+                <p>{{ auction.description }}</p>
+            </div>
+            <div class="card-action">
+                <a href="#">Number: <b style="color: #0D47A1">{{ auction.id }}</b></a>
+                <a href="#">Views: <b style="color: #00acc1">{{ auction.views }}</b></a>
+                <a href="#">: <b style="color: #00b0ff">{{ user.username }}</b></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {{ auction.end_day }}<br>
 {{ auction.end_hour }}<br>
 {{ auction.minimum_price }}<br>
-{{ auction.description }}<br>
-{{ auction.views }}<br>
 {{ user.first_name }} {{ user.last_name }}
 </body>
 </html>
