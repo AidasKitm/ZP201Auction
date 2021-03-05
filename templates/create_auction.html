@@ -5,14 +5,17 @@
     <title>Title</title>
 </head>
 <body>
-<form method="post">
+<div class="container">
+    <form method="post" class="material-icons">
     {{ auction_form.csrf_token }}
-    {% for field in auction_form %}
-        {{ field.label }}
-        {{ field }}
-    {% endfor %}
+        <div class="material-icons col s12 m8">
+            {{ auction_form.title }}
 
-    <button type="submit"></button>
+        </div>
+
+
+    <button type="submit" class="btn"></button>
 </form>
+</div>
 </body>
 </html>
