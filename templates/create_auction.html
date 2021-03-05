@@ -1,21 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+{% include 'base.html' %}
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <div class="container">
-    <form method="post" class="material-icons">
-    {{ auction_form.csrf_token }}
-        <div class="material-icons col s12 m8">
-            {{ auction_form.title }}
-
-        </div>
-
-
-    <button type="submit" class="btn"></button>
-</form>
+    <div class="row">
+        <form method="post">
+            {{ auction_form.csrf_token }}
+            <div class="input-field col s12 m8">
+                <i class="material-icons prefix"></i>
+                {{ auction_form.title(class_="validate") }}
+                {{ auction_form.title.label }}
+            </div>
+            <div class="input-field col s12 m8">
+                <i class="material-icons prefix"></i>
+                {{ auction_form.description(class_="materialize-textarea") }}
+                {{ auction_form.description.label }}
+            </div>
+            <div class="input-field col s12 m8">
+                <i class="material-icons prefix"></i>
+                {{ auction_form.category(class_="validate") }}
+                {{ auction_form.category.label }}
+            </div>
+            <div class="input-field col s12 m8">
+                <i class="material-icons prefix"></i>
+                {{ auction_form.city(class_="validate") }}
+                {{ auction_form.city.label }}
+            </div>
+            <div class="input-field col s12 m8">
+                <i class="material-icons prefix"></i>
+                {{ auction_form.minimal_price(class_="validate") }}
+                {{ auction_form.minimal_price.label }}
+            </div>
+            <div class="input-field col s12 m8">
+                <i class="material-icons prefix"></i>
+                {{ auction_form.end_day(class_="datepicker") }}
+                {{ auction_form.end_day.label }}
+            </div>
+            <div class="input-field col s12 m8">
+                <i class="material-icons prefix"></i>
+                {{ auction_form.end_hour(class_="timepicker") }}
+                {{ auction_form.end_hour.label }}
+            </div>
+            <div class="input-field col s12 m8">
+                <button type="submit" class="btn waves-effect waves-light">Create</button>
+            </div>
+        </form>
+    </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $('select').formSelect();
+        $('.datepicker').datepicker({format: 'yyyy-mm-dd'});
+        $('.timepicker').timepicker({twelveHour: false});
+    });
+</script>
 </body>
 </html>
