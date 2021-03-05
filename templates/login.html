@@ -9,7 +9,7 @@
     {{ login_form.csrf_token }}
     {% for field in login_form %}
         {{ field.label }}
-        {{ field }}
+        {{ field }} <br>
     {% endfor %}
 
     <button type="submit"></button>

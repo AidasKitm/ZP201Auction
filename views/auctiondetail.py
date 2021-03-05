@@ -6,7 +6,7 @@ from models.user import User
 from models.auction import Auction
 
 
-class AuctionListing(MethodView):
+class AuctionDetails(MethodView):
 
     def get(self, auction_id):
         auction = Auction.query.filter_by(id=auction_id).first()
