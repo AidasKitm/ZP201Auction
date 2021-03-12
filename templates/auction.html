@@ -1,90 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-{% include 'base.html' %}
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-
 </head>
 <body>
+{% include 'base.html' %}
+
 <div class="container">
     <div class="row">
-        <div class="col s12 m8">
+        <div class="col s12 m6">
             <div class="card">
-                <div class="title col s12 m8">
-                    <span class="card-title">{{ auction.title.label }}</span>
+                <div class="card-image">
+                    <img src="{{ url_for('static', filename= "auction_images/" + auction.image) }}">
+                    <span class="card-title">{{ auction.name }}</span>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <span style="color: #ff8a65;">{{ auction.city|upper }}</span>
+                    </div>
+
+                    <p>{{ auction.description }}</p>
+                </div>
+                <div class="card-action">
+                    <a href="#">No. <b style="color: #000">{{ auction.id }}</b></a>
+                    <a href="#">Views <b id="views" style="color: #000">{{ auction.views }}</b></a>
+{#                    <a href="{{ url_for('user', user_id=user.id) }}">{{ user.username }}</a>#}
                 </div>
             </div>
-            <div class="card-content">
-                <div>
-                    <span style="color: #5a5a5a">{{ auction.city|upper }}</span>
-                </div>
-
-                <p>{{ auction.description }}</p>
-            </div>
-            <div class="card-action">
-                <a href="#">Number: <b style="color: #0D47A1">{{ auction.id }}</b></a>
-                <a href="#">Views: <b style="color: #00acc1">{{ auction.views }}</b></a>
-                <a href="#">: <b style="color: #00b0ff">{{ user.username }}</b></a>
-            </div>
-
         </div>
-        <tbody id="offers">
-        {% if biggest_offers %}
-            {% for user in biggest_offers %}
+        <div class="col s12 m6">
+            <table class="striped">
+                <thead>
                 <tr>
-                    <th>{{ loop.index }}</th>
-                    <th>{{ user.username }}</th>
-                    <th>{{ offers_by_auction[loop.index0].price }}</th>
+                    <th>#</th>
+                    <th>User name</th>
+                    <th>Price</th>
                 </tr>
-            {% endfor %}
-        {% endif %}
-        </tbody>
-        {% if session %}
-        <form method="POST">
-            <div class="input-field col s6">
-                <input name="new_price" id="new_price" type="number" min="{{ auction.minimum_price }}" class="validate">
-                <label for="new_price">New offered price</label>
-                <span class="helper-text">Minimum acceptable price: {{ auction.minimum_price }}</span>
-                <div class="input-field col s12 m8">
-                    <button class="btn waves-light waves-effect" type="submit" name="action">Submit new price</button>
-                </div>
-            </div>
-        </form>
-        {% endif %}
+                </thead>
+
+                <tbody id="offers">
+                {% if top_bidders|length %}
+                    {% for user in top_bidders %}
+                        <tr>
+                            <th>{{ loop.index }}</th>
+                            <td>{{ user.username }}</td>
+                            <td>{{ offers_by_auction[loop.index0].price }} $</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <th scope="row">0</th>
+                        <td>There is no offers on this auction</td>
+                        <td>0 $</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+            {% if session %}
+                <form action="" method="POST">
+                    <div class="input-field col s6">
+                        <input name="new_price" id="new_price" type="number" min="{{ auction.minimal_price }}"
+                               class="validate">
+                        <label for="new_price">Enter new Price</label>
+                        <span class="helper-text">Minimal price is: {{ auction.minimal_price }} $</span>
+                    </div>
+                    <div class="input-field col s12 m8">
+                        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                        </button>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
     </div>
 </div>
-
-
-{{ auction.end_day }}<br>
-{{ auction.end_hour }}<br>
-{{ auction.minimum_price }}<br>
-{{ user.first_name }} {{ user.last_name }}
+<script type="text/javascript" src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
     let socket = io.connect('http://' + document.domain + ':' + location.port);
     const auctionId = location.pathname.replace('/auction/', '')
 
     socket.emit('auction', {auctionId: auctionId});
+    console.log(socket.emit('auction', {auctionId: auctionId}))
+    socket.on('auctionResponse' + auctionId, function(data){
+        document.querySelector('#views').textContent = data['views'];
 
-    socket.on('auctionResponse' + auctionId, function (data) {
-        document.querySelector('#views').textContent = data['views']
-
-        if (data['offers'].length){
+        if(data['offers'].length){
             $('#offers').empty();
             for (let offer = 0; offer < data['offers'].length; offer++) {
-                $('#offers').append('<tr>' + '<th>' + $(offer+1) + '</th>' +
-                    '<td>' + data['offers'][offer]['username'] +'</td>' +
-                    '<td>' + data['offers'][offer]['price'] +'</td>' +
+                $('#offers').append('<tr>' +
+                    '<th>'+ (offer+1) +'</th>' +
+                    '<td>'+ data['offers'][offer]['username'] +'</td>' +
+                    '<td>'+ data['offers'][offer]['price'] +'</td>' +
                     '</tr>')
             }
         }
+        console.log(data)
     })
 
 
 </script>
 </body>
-
-
-
 </html>

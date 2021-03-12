@@ -28,32 +28,20 @@ app.add_url_rule('/auction/<int:auction_id>', view_func=AuctionDetails.as_view('
 
 @socketio.on('auction')
 def auction(response):
-    selected_auction = Auction.query.filter_by(id=response['auctionId']).first()
-    offers = Offer.query.filter_by(auction_id=selected_auction.id).order_by(Offer.price.desc()).limit(5).all()
-    biggest_offers = []
+    auction_listing = Auction.query.filter_by(id=response['auctionId']).first()
+    offers = Offer.query.filter_by(
+        auction_id=auction_listing.id).order_by(Offer.price.desc()).limit(5).all()
+    highest_offer = []
     for offer in offers:
-        user = User.query.filter_by(id=offer.id).first()
-        offer_with_user = {'user': user, 'price': offer.price}
-        biggest_offers.append(offer_with_user)
+        user = User.query.filter_by(id=offer.user_id).first()
+        single_offer = {'username': user.username, 'price': offer.price}
+        highest_offer.append(single_offer)
 
-    auction_response = {'id':selected_auction.id, 'views': selected_auction.views, 'offers': biggest_offers}
+    auction_response = {'id': auction_listing.id,
+                        'views':auction_listing.views,
+                        'offers': highest_offer}
     emit('auctionResponse' + str(auction_response['id']), auction_response, broadcast=True)
-
 
 if __name__ == '__main__':
     db.create_all(app=app)
     socketio.run(app=app, host='0.0.0.0')
-
-# Python3 -> sintakse -> loginiu uzdaviniu pasprest
-
-# Vertinimo aplikacija:
-#
-# Vartotojas gali susikurti vartotojo sasaja.
-#
-# Įmonė gali susikurti sasaja
-#
-# Vartotojai gali įvertinti įmone ir palikti komentara prie įmonės įvertinimo.
-#
-# Vartotojas kuris paliko komentara gali ji pakoreguoti.
-#
-# Imone gali atsakyti i palikta vartotojo komentara.
