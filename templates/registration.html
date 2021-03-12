@@ -6,16 +6,24 @@
     <title>Title</title>
 </head>
 <body>
-{% include 'navbar.html' %}
-<form method="post">
-    {{ registration_form.csrf_token }}
-    {% for field in registration_form %}
-        {{ field.label }}
-        {{ field }} <br>
+<div class="container">
+    <div class="row">
+        <form method="post">
+            {{ registration_form.csrf_token }}
+            {% for field in registration_form if field.widget.input_type != 'hidden' %}
+                <div class="input-field col s12 m6">
+                    <i class="material-icons prefix"></i>
+                    {% if field != "csrf_token" %}
+                        {{ field.label }}
+                        {{ field }}
+                    {% endif %}
+                </div>
 
-    {% endfor %}
+            {% endfor %}
 
-    <button type="submit"></button>
-</form>
+            <button class="btn" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>

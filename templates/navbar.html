@@ -5,11 +5,15 @@
             <li class="divider"></li>
             <li><a href="{{ url_for('index') }}" class="center-align">Home</a></li>
             <li class="divider"></li>
-            <li><a href="{{ url_for('login') }}" class="right-align">Login</a></li>
-            <li class="divider"></li>
-            <li><a href="{{ url_for('register') }}" class="left">Register</a></li>
+            {% if session['username'] %}
+                <li class="divider"></li>
+                <li><a href="{{ url_for('logout') }}" class="right-align">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}" class="right-align">Login</a></li>
+                <li class="divider"></li>
+                <li><a href="{{ url_for('register') }}" class="left">Register</a></li>
+            {% endif %}
+
         </ul>
     </div>
-
-{# IF not logged in ->  DROPDOWN -> Login/Register   #}
 </nav>

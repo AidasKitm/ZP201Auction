@@ -6,7 +6,59 @@
     <title>Title</title>
 </head>
 <body>
-{% include 'navbar.html' %}
-    {{ user }}
+{{ user }}
+<div class="container">
+    <div class="row">
+        {% for auction in auctions %}
+            <a href="{{ url_for('auction', auction_id=auction.id) }}">
+                <ul class="collection">
+                    <div class="collection-item col s12 m6">
+                        <i class="material-icons prefix"></i>
+                        Title : {{ auction.title }}
+
+                    </div>
+                    <div class="collection-item col s12 m6">
+                        <i class="material-icons prefix"></i>
+                        Category : {{ auction.category }}
+
+                    </div>
+                    <div class="collection-item col s12 m6">
+                        <i class="material-icons prefix"></i>
+                        City : {{ auction.city }}
+
+                    </div>
+                    <div class="collection-item col s12 m6">
+                        <i class="material-icons prefix"></i>
+                        {{ auction.minimum_price.label }} : {{ auction.minimum_price }}
+                    </div>
+                    <div class="collection-item col s12 m6">
+                        <i class="material-icons prefix"></i>
+                        Day Ending : {{ auction.end_day }}
+
+                    </div>
+                    <div class="collection-item col s12 m6">
+                        <i class="material-icons prefix"></i>
+                        Time Ending : {{ auction.end_hour }}
+
+                    </div>
+
+                    <div class="collection-item col s12 m6">
+                        <i class="material-icons prefix"></i>
+                        Description : {{ auction.description }}
+
+                    </div>
+
+                    <div class="collection-item col s12 m6">
+                        <i class="material-icons prefix"></i>
+                        Views : {{ auction.views }}
+
+                    </div>
+
+                </ul>
+            </a>
+        {% endfor %}
+
+    </div>
+</div>
 </body>
 </html>

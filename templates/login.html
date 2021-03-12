@@ -6,7 +6,6 @@
     <title>Login</title>
 </head>
 <body>
-{% include 'navbar.html' %}
 <form method="post">
     {{ login_form.csrf_token }}
     {% for field in login_form %}
