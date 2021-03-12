@@ -24,22 +24,28 @@ app.add_url_rule('/logout', view_func=LogOut.as_view('logout'))
 app.add_url_rule('/create_auction', view_func=CreateAuction.as_view('create_auction'))
 app.add_url_rule('/auction/<int:auction_id>', view_func=AuctionDetails.as_view('auction'))
 
-# SOCKET -> Tunelis -> komunikuoti tarp 2 prisijungimo tasku -> Server <-> Client
+# SOCKET -> Tunelis -> komunikuoti tarp 2 prisijungimo taškų -> Server <-> Client
 
 @socketio.on('auction')
 def auction(response):
     auction_listing = Auction.query.filter_by(id=response['auctionId']).first()
     offers = Offer.query.filter_by(
         auction_id=auction_listing.id).order_by(Offer.price.desc()).limit(5).all()
-    highest_offer = []
+    highest_offers = []
+    prices = []
     for offer in offers:
         user = User.query.filter_by(id=offer.user_id).first()
         single_offer = {'username': user.username, 'price': offer.price}
-        highest_offer.append(single_offer)
+        highest_offers.append(single_offer)
+        prices.append(single_offer['price'])
+    highest_offer = auction_listing.minimum_price
+    if prices != []:
+        highest_offer = max(prices)
 
     auction_response = {'id': auction_listing.id,
                         'views':auction_listing.views,
-                        'offers': highest_offer}
+                        'offers': highest_offers,
+                        'highest_offer': highest_offer}
     emit('auctionResponse' + str(auction_response['id']), auction_response, broadcast=True)
 
 if __name__ == '__main__':

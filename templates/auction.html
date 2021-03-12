@@ -10,7 +10,7 @@
         <div class="col s12 m6">
             <div class="card">
                 <div class="card-image">
-                    <img src="{{ url_for('static', filename= "auction_images/" + auction.image) }}">
+                    <img src="{{ url_for('static', filename= "auction_images/" + auction.auction_image) }}">
                     <span class="card-title">{{ auction.name }}</span>
                 </div>
                 <div class="card-content">
@@ -38,8 +38,8 @@
                 </thead>
 
                 <tbody id="offers">
-                {% if top_bidders|length %}
-                    {% for user in top_bidders %}
+                {% if user_offers|length %}
+                    {% for user in user_offers %}
                         <tr>
                             <th>{{ loop.index }}</th>
                             <td>{{ user.username }}</td>
@@ -58,10 +58,10 @@
             {% if session %}
                 <form action="" method="POST">
                     <div class="input-field col s6">
-                        <input name="new_price" id="new_price" type="number" min="{{ auction.minimal_price }}"
+                        <input name="new_price" id="new_price" type="number" min="{{ highest_offer }}"
                                class="validate">
                         <label for="new_price">Enter new Price</label>
-                        <span class="helper-text">Minimal price is: {{ auction.minimal_price }} $</span>
+                        <span class="helper-text" id="minimum_offer_price">Minimal price is: {{ highest_offer }} $</span>
                     </div>
                     <div class="input-field col s12 m8">
                         <button class="btn waves-effect waves-light" type="submit" name="action">Submit
@@ -79,10 +79,10 @@
     const auctionId = location.pathname.replace('/auction/', '')
 
     socket.emit('auction', {auctionId: auctionId});
-    console.log(socket.emit('auction', {auctionId: auctionId}))
+
     socket.on('auctionResponse' + auctionId, function(data){
         document.querySelector('#views').textContent = data['views'];
-
+        document.querySelector('#minimum_offer_price').textContent = data['highest_offer']
         if(data['offers'].length){
             $('#offers').empty();
             for (let offer = 0; offer < data['offers'].length; offer++) {
@@ -93,7 +93,6 @@
                     '</tr>')
             }
         }
-        console.log(data)
     })
 
 

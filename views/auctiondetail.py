@@ -21,14 +21,13 @@ class AuctionDetails(MethodView):
         offers_by_auction = Offer.query.filter_by(
             auction_id=auction.id).order_by(Offer.price.desc()).limit(5).all()
         user_offers = []
+        biggest_offers = []
         if offers_by_auction is not None:
             for offer in offers_by_auction:
                 user_offers.append(User.query.filter_by(id=offer.user_id).first())
+                biggest_offers.append(offer.price)
 
         session_user = session.get('username')
-        if user.username == session_user:
-            session_user = None
-
         return render_template('auction.html',
                                auction=auction,
                                user=user,
